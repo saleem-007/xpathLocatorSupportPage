@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Support · XPath Locator Generator</title>
+  <meta name="description" content="Help, FAQ, and troubleshooting for the XPath Locator Generator Chrome extension. Answers to common questions, exact-error-message lookups, and contact info.">
+  <style>
+    :root {
+      --bg: #0e0f13;
+      --bg-card: #16181f;
+      --bg-soft: #1c1f28;
+      --border: #262a35;
+      --border-bright: #353a48;
+      --text: #e6e8ee;
+      --text-dim: #9098a8;
+      --text-mute: #5e6577;
+      --accent: #b4ff39;
+      --accent-dim: #7cad22;
+      --orange: #ffb454;
+      --orange-dim: #c08232;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ─── Header ──────────────────────────────────────────────────── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 28px;
+      margin-bottom: 32px;
+    }
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+    }
+    .brand span {
+      color: var(--accent);
+      font-weight: 400;
+    }
+    h1 {
+      font-size: 34px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      color: var(--text-dim);
+      font-size: 16px;
+      margin: 0;
+    }
+
+    /* ─── Search-jump block ───────────────────────────────────────── */
+    .jump {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin: 0 0 36px;
+      border: 1px solid var(--border);
+    }
+    .jump-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .jump-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 18px;
+    }
+    .jump-grid a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 4px 0;
+      border-bottom: 1px dashed transparent;
+      transition: color 0.1s, border-color 0.1s;
+    }
+    .jump-grid a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent-dim);
+    }
+    .jump-grid a::before {
+      content: '→';
+      color: var(--accent-dim);
+      margin-right: 8px;
+      font-family: var(--font-mono);
+    }
+
+    /* ─── Sections ────────────────────────────────────────────────── */
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 48px 0 14px;
+      color: var(--text);
+      letter-spacing: -0.2px;
+      scroll-margin-top: 24px;
+    }
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--accent);
+      margin-right: 12px;
+      vertical-align: -3px;
+      border-radius: 1px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 24px 0 8px;
+      color: var(--text);
+      scroll-margin-top: 24px;
+    }
+    p {
+      margin: 0 0 14px;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 22px;
+      margin: 0 0 16px;
+    }
+    li {
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    /* ─── Code & keys ─────────────────────────────────────────────── */
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      background: var(--bg-card);
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    kbd {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text);
+      background: var(--bg-soft);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border-bright);
+      border-bottom-width: 2px;
+      font-weight: 600;
+    }
+
+    /* ─── Quick start steps ───────────────────────────────────────── */
+    .steps {
+      counter-reset: step;
+      padding-left: 0;
+      list-style: none;
+      margin: 16px 0 24px;
+    }
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 14px 16px 14px 56px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* ─── FAQ / Troubleshooting cards ─────────────────────────────── */
+    .faq {
+      background: var(--bg-card);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 16px 22px;
+      margin: 0 0 14px;
+    }
+    .faq summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text);
+      list-style: none;
+      padding-right: 24px;
+      position: relative;
+      font-size: 15px;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1;
+      transition: transform 0.15s;
+      font-family: var(--font-mono);
+    }
+    .faq[open] summary::after {
+      content: '−';
+    }
+    .faq-body {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+      color: var(--text-dim);
+    }
+    .faq-body p { color: var(--text-dim); margin-bottom: 10px; }
+    .faq-body p:last-child { margin-bottom: 0; }
+    .faq-body strong { color: var(--text); }
+
+    /* Troubleshooting variant — orange border (warn) */
+    .ts {
+      border-left-color: var(--orange);
+    }
+    .ts summary::after { color: var(--orange); }
+
+    /* ─── Error-message lookup table ──────────────────────────────── */
+    .error-lookup {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+      background: var(--bg-card);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .error-lookup th, .error-lookup td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .error-lookup th {
+      background: rgba(255, 180, 84, 0.06);
+      color: var(--orange);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .error-lookup tr:last-child td { border-bottom: none; }
+    .error-lookup .err-msg {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--orange);
+      white-space: nowrap;
+    }
+
+    /* ─── Contact card ────────────────────────────────────────────── */
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 8px;
+      padding: 24px 26px;
+      margin: 40px 0 0;
+    }
+    .contact-card h2 {
+      margin-top: 0;
+    }
+    .contact-card a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--accent-dim);
+    }
+    .contact-card a:hover {
+      border-bottom-style: solid;
+    }
+    .contact-tips {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--bg-soft);
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .contact-tips strong { color: var(--text); }
+    .contact-tips ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+    .contact-tips li { color: var(--text-dim); margin-bottom: 4px; }
+
+    /* ─── Footer ──────────────────────────────────────────────────── */
+    footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-mute);
+      text-align: center;
+    }
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--text-mute);
+    }
+    footer a:hover { color: var(--accent); }
+
+    /* ─── Mobile ──────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      main { padding: 28px 18px 60px; }
+      h1 { font-size: 26px; }
+      h2 { font-size: 18px; }
+      .jump-grid { grid-template-columns: 1fr; }
+      .error-lookup { font-size: 12px; }
+      .error-lookup th, .error-lookup td { padding: 10px 10px; }
+      .error-lookup .err-msg { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+<main>
+
+  <header>
+    <div class="brand">xpath<span>locator</span></div>
+    <h1>Support &amp; help</h1>
+    <p class="subtitle">Quick answers, troubleshooting, and how to get in touch.</p>
+  </header>
+
+  <!-- ─── Jump-to navigation ─────────────────────────────────────── -->
+  <div class="jump">
+    <div class="jump-title">JUMP TO</div>
+    <div class="jump-grid">
+      <a href="#quickstart">Quick start</a>
+      <a href="#modes">The three modes</a>
+      <a href="#faq">Frequently asked questions</a>
+      <a href="#errors">Error message lookup</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#enterprise">Enterprise &amp; security</a>
+      <a href="#contact">Contact &amp; bug reports</a>
+      <a href="#changelog">Version history</a>
+    </div>
+  </div>
+
+  <!-- ─── QUICK START ────────────────────────────────────────────── -->
+  <h2 id="quickstart">Quick start</h2>
+  <p>If you just installed the extension and want to verify it works, here's the fastest path:</p>
+
+  <ol class="steps">
+    <li>Open any regular website (anything starting with <code>http://</code> or <code>https://</code>).</li>
+    <li>Click the XPath Locator Generator icon in your Chrome toolbar. The side panel opens.</li>
+    <li>Click <strong>Single Locator</strong> in the panel.</li>
+    <li>Click any element on the page — a button, an input, a link, a heading. The xpath appears in the panel.</li>
+    <li>Click <strong>copy</strong> next to the xpath to copy it to your clipboard.</li>
+  </ol>
+
+  <p>If that doesn't work, jump to <a href="#troubleshooting" style="color: var(--accent);">Troubleshooting</a>.</p>
+
+  <!-- ─── MODES ──────────────────────────────────────────────────── -->
+  <h2 id="modes">The three modes</h2>
+
+  <h3>Single Locator</h3>
+  <p>One click gives you the best xpath for that one element, plus alternative locator strategies (id, className, css, name). Use the chevron next to <em>Other Locator Strategies</em> to expand and see all options with their match counts.</p>
+
+  <h3>List of Locators</h3>
+  <p>One click gives you xpaths for <strong>every</strong> element that matches the same pattern. Useful for capturing "all rows in this table" or "every Add-to-Cart button on the page" in a single action. Click <strong>COPY ALL</strong> to grab them all at once.</p>
+
+  <h3>Dynamic Locator</h3>
+  <p>Parameterized xpath templates with ready-to-paste code snippets for Selenium (Java, Python) and Playwright (JavaScript). Three sub-modes under the Dynamic Locator card:</p>
+  <ul>
+    <li><strong>Normal</strong> — single-click parameterization. Click one element; the extension extracts variable parts (its own text) and produces a template.</li>
+    <li><strong>1 Condition</strong> — two-click flow. Click the target first (e.g. an unlabeled checkbox), then click a static text anchor near it (e.g. the word "Sony"). The anchor text becomes a variable in the generated code, so you can swap "Sony" for "JBL", "Bose", etc.</li>
+    <li><strong>2 Condition</strong> — three-click flow for table cells. Click the target cell, then the column header, then the row header. The generated xpath is parameterized by both column and row, so you can pick any cell with just two string substitutions.</li>
+  </ul>
+
+  <!-- ─── FAQ ────────────────────────────────────────────────────── -->
+  <h2 id="faq">Frequently asked questions</h2>
+
+  <details class="faq">
+    <summary>How do I open the side panel again after I close it?</summary>
+    <div class="faq-body">
+      <p>Click the XPath Locator Generator icon in your Chrome toolbar (top-right area). If you don't see the icon, click Chrome's puzzle-piece icon and pin the extension. The side panel will reopen on whichever tab you're currently looking at.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>How do I capture a tooltip, dropdown, or other element that disappears?</summary>
+    <div class="faq-body">
+      <p>Use <strong>freeze mode</strong>. Click the snowflake icon in the side panel header before activating a capture mode. While frozen, the page's <code>setTimeout</code>, <code>setInterval</code>, and DOM-removal calls are paused, which prevents auto-dismiss UI from disappearing while you reach over to click it.</p>
+      <p>Toggle the snowflake icon again (or stop selection) to unfreeze the page.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>The xpath I copied doesn't find the element in my test. Why?</summary>
+    <div class="faq-body">
+      <p>The three most common causes:</p>
+      <ul>
+        <li><strong>Iframe context.</strong> If you clicked an element inside an iframe, you need to switch to that frame first in your test framework: <code>driver.switchTo().frame(...)</code> in Selenium or <code>page.frameLocator(...)</code> in Playwright. The extension shows the frame URL in the result eyebrow when this applies.</li>
+        <li><strong>Dynamic class names.</strong> If the page uses CSS Modules, emotion, or styled-components, class names like <code>btn_primary_a3f2b</code> change on every build. Check the alternatives block for a more stable strategy (id, name, role, or text-based).</li>
+        <li><strong>Wait conditions.</strong> Your test may run the xpath before the element has rendered. Wrap your query in an explicit wait (<code>WebDriverWait</code> or <code>page.waitFor</code>).</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Why does Chrome say "Read and change all your data on websites" when I install this?</summary>
+    <div class="faq-body">
+      <p>That's Chrome's generic wording for the <code>&lt;all_urls&gt;</code> host permission, which the extension uses so you don't have to click the icon every time you switch tabs.</p>
+      <p>In practice, the extension does <strong>not</strong> automatically attach to any page. It has no static content scripts — scripts inject only when you click a mode button. When you're just browsing your bank, Gmail, or anywhere else without invoking the extension, it has zero presence on those pages.</p>
+      <p>For full details, see the <a href="#" onclick="alert('Replace this link with the URL where you host privacy-policy.html')" style="color: var(--accent);">privacy policy</a>.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Does it work in Edge, Brave, Arc, or other Chromium browsers?</summary>
+    <div class="faq-body">
+      <p>Yes — any Chromium-based browser at version 114 or newer that supports Manifest V3 and the Side Panel API. Confirmed working on Chrome, Edge, Brave, Arc, and Opera. Firefox is not supported (different extension API).</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Can I use this on internal company applications or restricted Chrome installs?</summary>
+    <div class="faq-body">
+      <p>Yes. The extension makes zero network calls and ships with no third-party dependencies, so it's compatible with strict corporate Chrome policies. IT admins can also restrict it to specific hosts via the <code>runtime_blocked_hosts</code> and <code>runtime_allowed_hosts</code> policies. See the <a href="#enterprise" style="color: var(--accent);">enterprise section</a> below.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Does it work with Shadow DOM? Cross-origin iframes?</summary>
+    <div class="faq-body">
+      <p>Yes to both. The extension pierces open Shadow DOM and emits xpath that targets elements through the shadow boundary. For cross-origin iframes, content.js is injected into every frame of the tab when you activate a mode, so capture works regardless of the iframe's origin. The result includes the iframe URL so your test can switch into it.</p>
+      <p>Closed Shadow DOM is not accessible to any extension (Chrome blocks it for security).</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>How do I clear my saved state / preferences?</summary>
+    <div class="faq-body">
+      <p>The extension stores only three small values locally: your last captured xpath, the active mode, and whether the "Other Locator Strategies" block is expanded. To clear them:</p>
+      <ul>
+        <li>Visit <code>chrome://extensions</code>, find XPath Locator Generator, click <strong>Details</strong>, then <strong>Site settings</strong> → <strong>Clear data</strong>.</li>
+        <li>Or just uninstall the extension — Chrome removes all extension data automatically.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Is there an offline / air-gapped version?</summary>
+    <div class="faq-body">
+      <p>The extension is already fully offline. It makes zero network calls and contains no remote code. Once installed, it works on any disconnected machine. Chrome's auto-update mechanism is the only network activity related to the extension, and admins can disable that via the <code>ExtensionSettings.update_url</code> policy if needed.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>How do I report a bug or request a feature?</summary>
+    <div class="faq-body">
+      <p>See the <a href="#contact" style="color: var(--accent);">Contact</a> section below. Please include your Chrome version, the extension version (visible in the side panel header), the URL where the issue happened (if it's a public site), and the exact error message if one was shown.</p>
+    </div>
+  </details>
+
+
+  <!-- ─── EXACT ERROR LOOKUP ─────────────────────────────────────── -->
+  <h2 id="errors">Error message lookup</h2>
+  <p>If the side panel showed you a specific error message, find it here:</p>
+
+  <table class="error-lookup">
+    <thead>
+      <tr><th>What you saw</th><th>What it means &amp; what to do</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="err-msg">cannot run on this page · open a regular http/https site</td>
+        <td>You're on a <code>chrome://</code>, <code>chrome-extension://</code>, <code>edge://</code>, <code>about:</code>, or Chrome Web Store URL. Chrome blocks all extensions on these for security reasons. Open a regular http/https website and try again.</td>
+      </tr>
+      <tr>
+        <td class="err-msg">cannot run on this page · Chrome blocks extensions on this URL</td>
+        <td>Same as above — the URL is one Chrome itself forbids. Examples: <code>chrome://settings</code>, <code>view-source:</code>, the New Tab page.</td>
+      </tr>
+      <tr>
+        <td class="err-msg">couldn't find the active tab · try clicking the extension icon again</td>
+        <td>The side panel lost track of which tab you intend to capture on. Click the toolbar icon to reopen the panel on the desired tab, then try the mode button again.</td>
+      </tr>
+      <tr>
+        <td class="err-msg">couldn't connect to the page · refresh the tab</td>
+        <td>The content script injected but couldn't initialize, usually because the page is mid-navigation, suspended, or running in a strict CSP context that blocked the injection. Refresh the tab and try again. If it persists on a specific site, it may use a CSP that blocks all extension scripts.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- ─── TROUBLESHOOTING ────────────────────────────────────────── -->
+  <h2 id="troubleshooting">Troubleshooting</h2>
+
+  <details class="faq ts">
+    <summary>Nothing happens when I click a mode button</summary>
+    <div class="faq-body">
+      <p>Check the status text at the top of the side panel — there's almost always a specific error message there. Common causes:</p>
+      <ul>
+        <li>You're on a <code>chrome://</code> page. Open a regular website instead.</li>
+        <li>The page hasn't finished loading. Wait a second and try again.</li>
+        <li>The side panel was opened on a different tab than the one you're trying to capture. Click the toolbar icon to reopen on the current tab.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="faq ts">
+    <summary>The crosshair / highlight overlay doesn't appear when I hover</summary>
+    <div class="faq-body">
+      <p>If you activated a mode but no green overlay appears around elements as you hover:</p>
+      <ul>
+        <li>Refresh the tab and try again. The content script may have failed to inject due to a page-load race.</li>
+        <li>Some sites use strict CSP that blocks injected styles — try a different site to confirm the extension works at all, then report the specific site if you need it to work there.</li>
+        <li>Make sure no other QA / DOM-inspection extension is conflicting (SelectorsHub, ChroPath, etc.). Disable others temporarily to isolate.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="faq ts">
+    <summary>Freeze mode doesn't pause the page as expected</summary>
+    <div class="faq-body">
+      <p>Freeze mode overrides <code>setTimeout</code>, <code>setInterval</code>, <code>requestAnimationFrame</code>, and DOM-removal methods. It works for most pages but has limits:</p>
+      <ul>
+        <li>Animations driven purely by CSS (without timers) won't pause. You can still click the element while it's animating.</li>
+        <li>Tooltips that close on focus-out or pointer-out may close before you click them — try clicking immediately after toggling freeze.</li>
+        <li>WebSocket-driven UI updates (live dashboards) may continue to refresh, since freeze doesn't intercept network events.</li>
+      </ul>
+      <p>Toggle freeze off after capture to restore normal page behavior. Reload the tab if anything seems stuck.</p>
+    </div>
+  </details>
+
+  <details class="faq ts">
+    <summary>1-Condition or 2-Condition flow keeps asking me to "click a different element"</summary>
+    <div class="faq-body">
+      <p>This happens when two consecutive clicks resolve to the same DOM element. The most common cause: the page uses a "button containing nested spans" pattern, and clicking different parts of the visible widget all map to the same clickable ancestor.</p>
+      <p>Tips:</p>
+      <ul>
+        <li>For 1-Condition: click the target element first (the checkbox or input), then click the visible <em>text</em> of the label — not the area around it.</li>
+        <li>For 2-Condition: click the target cell first, then the column header text, then the row header text. Each click should land on a distinct cell.</li>
+        <li>Press <kbd>Esc</kbd> to cancel and start over if you get stuck.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="faq ts">
+    <summary>Copy button doesn't copy anything</summary>
+    <div class="faq-body">
+      <p>The extension uses the standard <code>navigator.clipboard.writeText</code> API, which Chrome restricts to user-initiated actions. If clicking copy seems to do nothing:</p>
+      <ul>
+        <li>Make sure you actually clicked the copy button (not nearby empty area).</li>
+        <li>Try opening DevTools (<kbd>F12</kbd>) and checking the Console for any clipboard-related error.</li>
+        <li>Some corporate DLP solutions block clipboard writes — check with your IT team if you're on a managed device.</li>
+      </ul>
+    </div>
+  </details>
+
+
+  <!-- ─── ENTERPRISE ─────────────────────────────────────────────── -->
+  <h2 id="enterprise">Enterprise &amp; security</h2>
+  <p>For IT admins evaluating this extension for managed deployment:</p>
+  <ul>
+    <li>Manifest V3, minimum Chrome 114. Compatible with <a href="https://chromeenterprise.google/policies/" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">Chrome Enterprise policies</a>.</li>
+    <li>Force-install via <code>ExtensionInstallForcelist</code>; restrict to specific hosts via <code>runtime_blocked_hosts</code> / <code>runtime_allowed_hosts</code>.</li>
+    <li>No network calls, no telemetry, no third-party SDKs — verifiable by inspecting the source bundle.</li>
+    <li>No collection of cookies, history, form data, or browsing activity.</li>
+    <li>Three small UI-state values stored locally via <code>chrome.storage.local</code> (never synced).</li>
+    <li>Full documentation suite included in the source: <code>SECURITY.md</code>, <code>PRIVACY.md</code>, <code>PERMISSIONS.md</code>, <code>ENTERPRISE.md</code>, <code>THREAT_MODEL.md</code>.</li>
+  </ul>
+
+
+  <!-- ─── CONTACT ────────────────────────────────────────────────── -->
+  <div class="contact-card" id="contact">
+    <h2 style="margin-top: 0;">Contact &amp; bug reports</h2>
+    <p>If the FAQ and troubleshooting above didn't resolve your issue:</p>
+    <p>
+      <strong>Email:</strong>
+      <a href="mailto:sajb8722@gmail.com">sajb8722@gmail.com</a>
+    </p>
+    <p>
+      <strong>Issue tracker:</strong>
+      <a href="mailto:sajb8722@gmail.com" target="_blank" rel="noopener noreferrer">Please mail a bug or feature request</a>
+    </p>
+
+    <div class="contact-tips">
+      <strong>To help us help you, please include:</strong>
+      <ul>
+        <li>Your Chrome version (<code>chrome://version</code>)</li>
+        <li>The extension version (visible at the top of the side panel)</li>
+        <li>Your operating system</li>
+        <li>The exact error message if one was shown</li>
+        <li>The URL where the issue happened (if it's a public site)</li>
+        <li>Steps to reproduce, or a screenshot/screen recording</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- ─── CHANGELOG / VERSION ────────────────────────────────────── -->
+  <h2 id="changelog">Version history</h2>
+  <p>The full changelog ships with the extension. Recent highlights:</p>
+  <ul>
+    <li><strong>v2.15</strong> — Switched to <code>&lt;all_urls&gt;</code> host permission for friction-free multi-tab use. Still no static content scripts.</li>
+    <li><strong>v2.14</strong> — Enterprise readiness pass: strict CSP, full documentation suite, in-extension help page.</li>
+    <li><strong>v2.13</strong> — "Other Locator Strategies" block is now collapsible with keyboard support.</li>
+    <li><strong>v2.12</strong> — Bug fixes for the 1-Condition / 2-Condition dynamic flows.</li>
+    <li><strong>v2.11</strong> — Added Dynamic Locator sub-modes: Normal, 1 Condition, 2 Condition.</li>
+  </ul>
+
+
+  <footer>
+    XPath Locator Generator · Made for QA engineers &amp; SDETs · 100% local · No tracking
+  </footer>
+
+</main>
+</body>
+</html>
