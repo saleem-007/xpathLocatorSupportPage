@@ -436,33 +436,11 @@
   </details>
 
   <details class="faq">
-    <summary>Why does Chrome show me a permission prompt the first time I click a mode button?</summary>
-    <div class="faq-body">
-      <p>The first time you click <strong>Single Locator</strong>, <strong>List of Locators</strong>, or <strong>Dynamic Locator</strong>, Chrome shows a dialog asking: <em>"Allow XPath Locator Generator on all sites?"</em></p>
-      <p>This is the optional broad-host permission. The extension declares it as <code>optional_host_permissions</code> in its manifest (not <code>host_permissions</code>), so it's <strong>not granted automatically when you install</strong>. You explicitly opt in at first use.</p>
-      <p><strong>If you click "Allow":</strong> the extension works on every tab from then on. No further prompts.</p>
-      <p><strong>If you click "Don't allow":</strong> the extension still works on your currently active tab via the <code>activeTab</code> permission, but you'll need to re-open it via the toolbar icon each time you switch tabs. See the next FAQ for how to enable broader access later.</p>
-    </div>
-  </details>
-
-  <details class="faq">
-    <summary>I declined the permission prompt. How do I enable broader access now?</summary>
-    <div class="faq-body">
-      <p>You have two options:</p>
-      <ol>
-        <li>Click any mode button in the side panel again. Chrome will re-prompt you.</li>
-        <li>Go to <code>chrome://extensions</code> → find <strong>XPath Locator Generator</strong> → click <strong>Details</strong> → under <strong>Site access</strong>, choose "On all sites" instead of "On click."</li>
-      </ol>
-      <p>You can also use option 2 to revoke the permission later — set it back to "On click" and you'll be back to per-tab authorization mode.</p>
-    </div>
-  </details>
-
-  <details class="faq">
     <summary>Why does Chrome say "Read and change all your data on websites" when I install this?</summary>
     <div class="faq-body">
-      <p>In v2.16 and later, Chrome should NOT show that warning at install. Because the broad host permission is declared as <code>optional_host_permissions</code> (not granted at install), the install-time dialog only mentions the narrower <code>activeTab</code> permission. The broad permission is requested separately when you first click a mode button.</p>
-      <p>If you do see this wording at install, Chrome may be displaying the worst-case combination of permissions the extension could request. That's a Chrome UI choice — the actual behavior is what's described in the previous FAQ: nothing broad is granted until you explicitly accept the runtime prompt.</p>
-      <p>Even after you grant the broad permission, the extension does NOT attach to pages automatically. There are no static content scripts in the manifest, so when you're just browsing a site without invoking the extension, it has zero presence on that page — no listeners, no script execution.</p>
+      <p><strong>Required to inspect webpage elements and generate locators. No personal data or browsing activity is collected or shared.</strong></p>
+      <p>That warning is Chrome's standard wording for any extension that needs to read the DOM of a page. It's the same text Chrome shows for SelectorsHub, ChroPath, and every other QA inspector tool. Chrome owns that dialog text — extension developers can't customize it.</p>
+      <p>What the extension actually does: the manifest declares no <code>content_scripts</code>, so it does NOT attach to pages automatically. It only reads the DOM when you explicitly click a mode button to capture an xpath, and even then nothing is sent anywhere — all computation happens locally in your browser.</p>
     </div>
   </details>
 
@@ -534,10 +512,6 @@
       <tr>
         <td class="err-msg">couldn't find the active tab · try clicking the extension icon again</td>
         <td>The side panel lost track of which tab you intend to capture on. Click the toolbar icon to reopen the panel on the desired tab, then try the mode button again.</td>
-      </tr>
-      <tr>
-        <td class="err-msg">using activeTab · re-open the extension on each new tab</td>
-        <td><strong>Not an error.</strong> This appears in v2.16+ when you declined the optional "Allow on all sites" prompt. The extension is still working — but only on your currently active tab. When you switch to a different tab, you'll need to re-open the side panel by clicking the toolbar icon. To switch to unrestricted mode, see the FAQ above about declining the permission prompt.</td>
       </tr>
       <tr>
         <td class="err-msg">couldn't connect to the page · refresh the tab</td>
@@ -653,11 +627,12 @@
   </div>
 
 
-   <!-- ─── CHANGELOG / VERSION ────────────────────────────────────── -->
+  <!-- ─── CHANGELOG / VERSION ────────────────────────────────────── -->
   <h2 id="changelog">Version history</h2>
   <p>The full changelog ships with the extension. Recent highlights:</p>
   <ul>
-    <li><strong>v2.16</strong> — Switched <code>&lt;all_urls&gt;</code> to <code>optional_host_permissions</code> to address Chrome Web Store broad-permissions review. One-time runtime prompt instead of install-time grant.</li>
+    <li><strong>v2.17</strong> — Reverted to <code>&lt;all_urls&gt;</code> host_permissions for SelectorsHub-style UX. No runtime permission prompt; works on every tab from install.</li>
+    <li><strong>v2.16</strong> — (superseded) tried <code>optional_host_permissions</code> with a one-time runtime prompt.</li>
     <li><strong>v2.15</strong> — Switched to <code>&lt;all_urls&gt;</code> host permission for friction-free multi-tab use. Still no static content scripts.</li>
     <li><strong>v2.14</strong> — Enterprise readiness pass: strict CSP, full documentation suite, in-extension help page.</li>
     <li><strong>v2.13</strong> — "Other Locator Strategies" block is now collapsible with keyboard support.</li>
